@@ -1,0 +1,24 @@
+规则全部初始停用，先喂一段日志（无输出）：
+  feed #1: b'crash then retry'
+  输出   : []
+
+启用 ERR_CRASH / WARN_RETRY，继续喂：
+  feed #2: b'crash, retry ok'
+  -> end= 21  id=ERR_CRASH
+  -> end= 28  id=WARN_RETRY
+
+跨 chunk 匹配：先读到 'time'（停用状态下读入的前缀），再启用：
+  feed #3: b'out'（启用后结束的匹配仍可组成）
+  -> end= 38  id=ERR_TIMEOUT
+
+幂等启停：重复 enable/disable 不报错、不重复：
+  feed #4: b'retry crash'（retry 已停用）
+  -> end= 49  id=ERR_CRASH
+
+同位置多命中按 id 的 Unicode 字典序输出：
+  feed   : b'ab'
+  -> end=  2  id=a
+  -> end=  2  id=m
+  -> end=  2  id=z
+
+DEMO FINISHED

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-14T14:24:22+0000",
+  "python": {
+    "executable": "/usr/bin/python3",
+    "version": "3.11.2 (main, Oct  7 2026, 12:35:07) [GCC 12.2.0]",
+    "implementation": "CPython",
+    "platform": "Linux-6.12.69-linuxkit-aarch64-with-glibc2.36"
+  },
+  "isolated_mode_flag": "-I",
+  "tasks": [
+    {
+      "name": "verify",
+      "kind": "test",
+      "description": "确定性用例 + 400 轮随机差分 + 不可变性检查",
+      "command": "python3 -I verify.py",
+      "returncode": 0,
+      "status": "passed",
+      "wall_clock_sec": 0.1197,
+      "stdout_log": "logs/verify.out.log",
+      "stderr_log": "logs/verify.err.log"
+    },
+    {
+      "name": "demo",
+      "kind": "demo",
+      "description": "流式日志中随时启停规则的真实演示",
+      "command": "python3 -I demo.py",
+      "returncode": 0,
+      "status": "passed",
+      "wall_clock_sec": 0.0218,
+      "stdout_log": "logs/demo.out.log",
+      "stderr_log": "logs/demo.err.log"
+    },
+    {
+      "name": "benchmark",
+      "kind": "benchmark",
+      "description": "构建/启停/扫描/状态稳定性规模实测，输出 JSON",
+      "command": "python3 -I benchmark.py",
+      "returncode": 0,
+      "status": "passed",
+      "wall_clock_sec": 8.9471,
+      "stdout_log": "logs/benchmark.out.log",
+      "stderr_log": "logs/benchmark.err.log",
+      "benchmark_json": {
+        "python": "3.11.2",
+        "build": [
+          {
+            "P": 100,
+            "N_bytes": 837,
+            "trie_nodes": 817,
+            "build_sec": 0.0013,
+            "us_per_N_byte": 1.503
+          },
+          {
+            "P": 1000,
+            "N_bytes": 9539,
+            "trie_nodes": 8783,
+            "build_sec": 0.0211,
+            "us_per_N_byte": 2.211
+          },
+          {
+            "P": 10000,
+            "N_bytes": 115108,
+            "trie_nodes": 104681,
+            "build_sec": 0.4805,
+            "us_per_N_byte": 4.174
+          },
+          {
+            "P": 50000,
+            "N_bytes": 574719,
+            "trie_nodes": 510363,
+            "build_sec": 4.6314,
+            "us_per_N_byte": 8.059
+          }
+        ],
+        "toggle": {
+          "rounds": 20000,
+          "avg_enable_us": 4.979,
+          "avg_disable_us": 1.566,
+          "avg_idempotent_noop_us": 0.223
+        },
+        "scan_all_disabled": {
+          "L_bytes": 200000,
+          "outputs": 0,
+          "scan_sec": 0.0687,
+          "MB_per_s": 2.91,
+          "us_per_byte": 0.343
+        },
+        "scan_all_enabled": {
+          "L_bytes": 50000,
+          "K_outputs": 36847,
+          "scan_sec": 0.2893,
+          "MB_per_s": 0.17,
+          "us_per_byte": 5.785,
+          "ns_per_output": 7850.45
+        },
+        "state_stability": {
+          "feed_rounds": 41,
+          "cumulative_bytes": 335872,
+          "resident_entries_first": 156079,
+          "resident_entries_last": 156079,
+          "entries_grew": 0,
+          "tracemalloc_bytes_first": 6762912,
+          "tracemalloc_bytes_last": 6756608,
+          "malloc_growth_bytes": -6304
+        },
+        "differential_sanity": {
+          "checked_outputs": 14,
+          "match": true
+        }
+      }
+    }
+  ],
+  "overall_status": "passed"
+}
